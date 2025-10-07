@@ -1,0 +1,505 @@
+{
+	"info": {
+		"_postman_id": "6fb03fcc-7c2e-4792-9a6b-01d740c2055d",
+		"name": "Genesis DB - The event sourcing database",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26681351"
+	},
+	"item": [
+		{
+			"name": "Commit Events",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"events\": [\n      {\n        \"source\": \"io.genesisdb.app\",\n        \"subject\": \"/customer\",\n        \"type\": \"io.genesisdb.app.customer-added\",\n        \"data\": {\n          \"firstName\": \"Bruce\",\n          \"lastName\": \"Wayne\",\n          \"emailAddress\": \"bruce.wayne@enterprise.wayne\"\n        }\n      },\n      {\n        \"source\": \"io.genesisdb.app\",\n        \"subject\": \"/customer/1\",\n        \"type\": \"io.genesisdb.app.customer-added\",\n        \"data\": {\n          \"firstName\": \"Alfred\",\n          \"lastName\": \"Pennyworth\",\n          \"emailAddress\": \"alfred.pennyworth@enterprise.wayne\"\n        },\n        \"options\":  {\n          \"storeDataAsReference\": true\n        }\n      },\n      {\n        \"source\": \"io.genesisdb.store\",\n        \"subject\": \"/article\",\n        \"type\": \"io.genesisdb.store.article-added\",\n        \"data\": {\n          \"name\": \"Tumbler\",\n          \"color\": \"black\",\n          \"price\": 2990000.00\n        }\n      },\n      {\n        \"source\": \"io.genesisdb.app\",\n        \"subject\": \"/customer/fed2902d-0135-460d-8605-263a06308448\",\n        \"type\": \"io.genesisdb.app.customer-personaldata-changed\",\n        \"data\": {\n          \"firstName\": \"Angus\",\n          \"lastName\": \"MacGyver\",\n          \"emailAddress\": \"angus.macgyer@phoenix.foundation\"\n        }\n      }\n    ]\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/commit",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"commit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stream Events",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subject\": \"/\",\n    \"options\": {\n        // \"lowerBound\": \"5a3a3e66-4635-458e-a7ac-dffda1b13554\"\n        // \"includeLowerBoundEvent\": true\n        // \"latestByEventType\": \"io.genesisdb.app.customer-added\"\n    }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/stream",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"stream"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Observe Events",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subject\": \"/\",\n    \"options\": {\n        // \"lowerBound\": \"5a3a3e66-4635-458e-a7ac-dffda1b13554\"\n        // \"includeLowerBoundEvent\": true\n    }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/observe",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"observe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Events",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"query\": \"STREAM e FROM events WHERE e.subject UNDER '/customer' ORDER BY e.time ASC MAP { id: e.id, subject: e.subject, time: e.time, name: e.data.firstName + ' ' + e.data.lastName }\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/query",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Erase Events",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subject\": \"/customer/1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/erase",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"erase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Schema",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"io.genesisdb.app.customer-added\",\n    \"schema\": {\n        \"properties\": {\n            \"firstName\": { \"type\": \"string\", \"required\": true }\n        },\n        \"allowAdditionalProperties\": true\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/schema/register",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"schema",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Schemas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/schema/get",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"schema",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Subjects",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/subjects",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"subjects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Event Types",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/types",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Backup",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/backup/create",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"backup",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Restore Backup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"events\": [\n        // ...\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/backup/restore",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"backup",
+						"restore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Run Audit",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/status/audit",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"status",
+						"audit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/status",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ping",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{hostname}}:{{portNumber}}/api/v1/status/ping",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{hostname}}"
+					],
+					"port": "{{portNumber}}",
+					"path": [
+						"api",
+						"v1",
+						"status",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "secret",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "protocol",
+			"value": ""
+		},
+		{
+			"key": "portNumber",
+			"value": ""
+		},
+		{
+			"key": "hostname",
+			"value": ""
+		}
+	]
+}
