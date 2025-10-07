@@ -25,3 +25,13 @@ git clone https://github.com/genesisdb-io/genesisdb-io-postman.git
 ### 2. Import into Postman or Insomnia
 1. In Postman or Insomnia, import the file: ```genesisdb.json```
 2. Adjust the environment variables and authentication secret to match your setup
+
+## License
+
+MIT
+
+## Author
+
+* E-Mail: mail@genesisdb.io
+* URL: https://www.genesisdb.io
+* Docs: https://docs.genesisdb.io
